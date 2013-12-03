@@ -15,5 +15,28 @@ class NativeTypeRepository extends EntityRepository
     public function findAll() {
         return $this->findBy(array(), array('caption'=>'asc'));
     }
+    
+    public function initializeNativeTypes() {
+        $data=array(
+            'integer'=>'Número entero',
+            'bigint'=>'Número entero grande',
+            'float'=>'Número decimal',
+            'text'=>'Cadena de texto',
+            'date'=>'Fecha',
+            'time'=>'Hora',
+            'datetime'=>'Fecha y hora',
+            'boolean'=>'Boleano'
+        );
+        $em=$this->getEntityManager();
+        foreach ($data as $nt=>$caption) {
+            $nativeType=$this->findOneBy(array('name'=>$nt));
+            if (empty($nativeType)) {
+                $newNativeType=new \Gin\Erp\NodesBundle\Entity\NativeType();
+                $newNativeType->setName($nt)->setCaption($caption);
+                $em->persist($newNativeType);
+            }
+        }
+        $em->flush();
+    }
    
 }

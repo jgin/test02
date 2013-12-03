@@ -244,4 +244,16 @@ class NativeTypeController extends Controller
             ->getForm()
         ;
     }
+
+    /**
+     * Inicializa los tipos nativos
+     *
+     * @Route("/config/initialize")
+     * @Method("GET")
+     */
+    public function initializeAction() {
+        $em = $this->getDoctrine()->getManager();
+        $em->getRepository('GinErpNodesBundle:NativeType')->initializeNativeTypes();
+        return new \Symfony\Component\HttpFoundation\Response("success");
+    }
 }
