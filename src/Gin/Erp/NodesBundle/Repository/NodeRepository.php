@@ -39,4 +39,13 @@ class NodeRepository extends EntityRepository
         $con->getSchemaManager()->createTable($table);
     }
     
+    /**
+     * 
+     * @param \Gin\Erp\NodesBundle\Entity\Node $node
+     * @param \Doctrine\DBAL\Schema\Table $table
+     */
+    protected function addTableColumns($node, $table) {
+        
+    }
+    
 }
