@@ -1,0 +1,5 @@
+gin_erp_nodes:
+    resource: "@GinErpNodesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
