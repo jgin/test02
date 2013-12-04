@@ -12,4 +12,37 @@ use Doctrine\ORM\EntityRepository;
  */
 class NodeAttributeRepository extends EntityRepository
 {
+    
+    /**
+     * 
+     * @param \Gin\Erp\NodesBundle\Entity\NodeAttribute $nodeAttribute
+     */
+    public function createNodeAttribute($nodeAttribute) {
+        $em=$this->getEntityManager();
+        $em->persist($nodeAttribute);
+        $em->flush();
+        $this->createNodeTableColumn($nodeAttribute);
+    }
+    
+    /**
+     * 
+     * @param \Gin\Erp\NodesBundle\Entity\NodeAttribute $nodeAttribute
+     */
+    protected function createNodeTableColumn($nodeAttribute) {
+        $em=$this->getEntityManager();
+        $con=$em->getConnection();
+        
+        $realTableName='node_' . $nodeAttribute->getNode()->getName();
+//        $con->exec('create table '.$realTableName. '()');
+        
+        $tableDiff=new \Doctrine\DBAL\Schema\TableDiff($realTableName);
+        $tableDiff->addedColumns=array(
+            $nodeAttribute->getName()=>
+                new \Doctrine\DBAL\Schema\Column(
+                    $nodeAttribute->getName(),
+                    \Doctrine\DBAL\Types\Type::getType($nodeAttribute->getNativeType()->getName())));
+        
+        $con->getSchemaManager()->alterTable($tableDiff);
+    }
+    
 }

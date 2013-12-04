@@ -29,6 +29,13 @@ class Node
     private $name;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $caption;
+    
+    /**
      * @var ArrayCollection
      * 
      * @ORM\OneToMany(targetEntity="NodeAttribute", mappedBy="nodeType")
@@ -36,6 +43,15 @@ class Node
     private $attributes;
     
 
+    public function __toString() {
+        if (empty($this->caption)) {
+            return $this->getName();
+        } else {
+            return $this->getCaption();
+        }
+    }
+
+    
     /**
      * Constructor
      */
@@ -108,5 +124,28 @@ class Node
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * Set caption
+     *
+     * @param string $caption
+     * @return Node
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
+    
+        return $this;
+    }
+
+    /**
+     * Get caption
+     *
+     * @return string 
+     */
+    public function getCaption()
+    {
+        return $this->caption;
     }
 }

@@ -35,8 +35,16 @@ class NativeType
      */
     private $caption;
 
+    
+    public function __toString() {
+        if (empty($this->caption)) {
+            return $this->getName();
+        } else {
+            return $this->getCaption();
+        }
+    }
 
-    /**
+        /**
      * Get id
      *
      * @return integer 

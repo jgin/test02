@@ -24,6 +24,10 @@ class NodeRepository extends EntityRepository
         $this->createNodeTable($node);
     }
     
+    /**
+     * 
+     * @param \Gin\Erp\NodesBundle\Entity\Node $node
+     */
     protected function createNodeTable($node) {
         $em=$this->getEntityManager();
         $con=$em->getConnection();
@@ -37,15 +41,6 @@ class NodeRepository extends EntityRepository
         $table->setPrimaryKey(array('id'));
         
         $con->getSchemaManager()->createTable($table);
-    }
-    
-    /**
-     * 
-     * @param \Gin\Erp\NodesBundle\Entity\Node $node
-     * @param \Doctrine\DBAL\Schema\Table $table
-     */
-    protected function addTableColumns($node, $table) {
-        
     }
     
 }

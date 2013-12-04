@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NodeType extends AbstractType
+class NodeAttributeType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,8 +15,11 @@ class NodeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('node')
             ->add('name')
             ->add('caption')
+            ->add('nodeType')
+            ->add('nativeType')
         ;
     }
     
@@ -26,7 +29,7 @@ class NodeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Gin\Erp\NodesBundle\Entity\Node'
+            'data_class' => 'Gin\Erp\NodesBundle\Entity\NodeAttribute'
         ));
     }
 
@@ -35,6 +38,6 @@ class NodeType extends AbstractType
      */
     public function getName()
     {
-        return 'gin_erp_nodesbundle_node';
+        return 'gin_erp_nodesbundle_nodeattribute';
     }
 }

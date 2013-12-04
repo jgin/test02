@@ -51,6 +51,13 @@ class NodeAttribute
      * @ORM\JoinColumn(name="nativeTypeId", referencedColumnName="id")
      */
     private $nativeType;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    private $caption;
 
 
     /**
@@ -154,5 +161,28 @@ class NodeAttribute
     public function getNativeType()
     {
         return $this->nativeType;
+    }
+
+    /**
+     * Set caption
+     *
+     * @param string $caption
+     * @return NodeAttribute
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
+    
+        return $this;
+    }
+
+    /**
+     * Get caption
+     *
+     * @return string 
+     */
+    public function getCaption()
+    {
+        return $this->caption;
     }
 }

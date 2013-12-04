@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Gin\Erp\NodesBundle\Entity\Node;
-use Gin\Erp\NodesBundle\Form\NodeType;
+use Gin\Erp\NodesBundle\Entity\NodeAttribute;
+use Gin\Erp\NodesBundle\Form\NodeAttributeType;
 
 /**
- * Node controller.
+ * NodeAttribute controller.
  *
- * @Route("/node/admin")
+ * @Route("/nodeattr")
  */
-class NodeController extends Controller
+class NodeAttributeController extends Controller
 {
 
     /**
-     * Lists all Node entities.
+     * Lists all NodeAttribute entities.
      *
-     * @Route("/", name="node_admin")
+     * @Route("/", name="nodeattr")
      * @Method("GET")
      * @Template()
      */
@@ -29,39 +29,32 @@ class NodeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('GinErpNodesBundle:Node')->findAll();
-        
-//        $em->getConnection()->beginTransaction();
-//        $em->getConnection()->insert('node_test6', array(
-//            'id'=>2
-//        ));
-////        $em->getConnection()->rollBack();
-//        $em->getConnection()->commit();
-        
+        $entities = $em->getRepository('GinErpNodesBundle:NodeAttribute')->findAll();
+
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Node entity.
+     * Creates a new NodeAttribute entity.
      *
-     * @Route("/", name="node_admin_create")
+     * @Route("/", name="nodeattr_create")
      * @Method("POST")
-     * @Template("GinErpNodesBundle:Node:new.html.twig")
+     * @Template("GinErpNodesBundle:NodeAttribute:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Node();
+        $entity = new NodeAttribute();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $em->getRepository('GinErpNodesBundle:NodeAttribute')->createNodeAttribute($entity);
 //            $em->persist($entity);
 //            $em->flush();
-            $repo=$em->getRepository('GinErpNodesBundle:Node')->createNode($entity);
 
-            return $this->redirect($this->generateUrl('node_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('nodeattr_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -71,16 +64,16 @@ class NodeController extends Controller
     }
 
     /**
-    * Creates a form to create a Node entity.
+    * Creates a form to create a NodeAttribute entity.
     *
-    * @param Node $entity The entity
+    * @param NodeAttribute $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Node $entity)
+    private function createCreateForm(NodeAttribute $entity)
     {
-        $form = $this->createForm(new NodeType(), $entity, array(
-            'action' => $this->generateUrl('node_create'),
+        $form = $this->createForm(new NodeAttributeType(), $entity, array(
+            'action' => $this->generateUrl('nodeattr_create'),
             'method' => 'POST',
         ));
 
@@ -90,15 +83,15 @@ class NodeController extends Controller
     }
 
     /**
-     * Displays a form to create a new Node entity.
+     * Displays a form to create a new NodeAttribute entity.
      *
-     * @Route("/new", name="node_admin_new")
+     * @Route("/new", name="nodeattr_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Node();
+        $entity = new NodeAttribute();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -108,9 +101,9 @@ class NodeController extends Controller
     }
 
     /**
-     * Finds and displays a Node entity.
+     * Finds and displays a NodeAttribute entity.
      *
-     * @Route("/{id}", name="node_admin_show")
+     * @Route("/{id}", name="nodeattr_show")
      * @Method("GET")
      * @Template()
      */
@@ -118,10 +111,10 @@ class NodeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('GinErpNodesBundle:Node')->find($id);
+        $entity = $em->getRepository('GinErpNodesBundle:NodeAttribute')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Node entity.');
+            throw $this->createNotFoundException('Unable to find NodeAttribute entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -133,9 +126,9 @@ class NodeController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Node entity.
+     * Displays a form to edit an existing NodeAttribute entity.
      *
-     * @Route("/{id}/edit", name="node_admin_edit")
+     * @Route("/{id}/edit", name="nodeattr_edit")
      * @Method("GET")
      * @Template()
      */
@@ -143,10 +136,10 @@ class NodeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('GinErpNodesBundle:Node')->find($id);
+        $entity = $em->getRepository('GinErpNodesBundle:NodeAttribute')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Node entity.');
+            throw $this->createNotFoundException('Unable to find NodeAttribute entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -160,16 +153,16 @@ class NodeController extends Controller
     }
 
     /**
-    * Creates a form to edit a Node entity.
+    * Creates a form to edit a NodeAttribute entity.
     *
-    * @param Node $entity The entity
+    * @param NodeAttribute $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Node $entity)
+    private function createEditForm(NodeAttribute $entity)
     {
-        $form = $this->createForm(new NodeType(), $entity, array(
-            'action' => $this->generateUrl('node_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new NodeAttributeType(), $entity, array(
+            'action' => $this->generateUrl('nodeattr_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -178,20 +171,20 @@ class NodeController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Node entity.
+     * Edits an existing NodeAttribute entity.
      *
-     * @Route("/{id}", name="node_admin_update")
+     * @Route("/{id}", name="nodeattr_update")
      * @Method("PUT")
-     * @Template("GinErpNodesBundle:Node:edit.html.twig")
+     * @Template("GinErpNodesBundle:NodeAttribute:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('GinErpNodesBundle:Node')->find($id);
+        $entity = $em->getRepository('GinErpNodesBundle:NodeAttribute')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Node entity.');
+            throw $this->createNotFoundException('Unable to find NodeAttribute entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -201,7 +194,7 @@ class NodeController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('node_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('nodeattr_edit', array('id' => $id)));
         }
 
         return array(
@@ -210,11 +203,10 @@ class NodeController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
-    
     /**
-     * Deletes a Node entity.
+     * Deletes a NodeAttribute entity.
      *
-     * @Route("/{id}", name="node_admin_delete")
+     * @Route("/{id}", name="nodeattr_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -224,21 +216,21 @@ class NodeController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('GinErpNodesBundle:Node')->find($id);
+            $entity = $em->getRepository('GinErpNodesBundle:NodeAttribute')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Node entity.');
+                throw $this->createNotFoundException('Unable to find NodeAttribute entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('node'));
+        return $this->redirect($this->generateUrl('nodeattr'));
     }
 
     /**
-     * Creates a form to delete a Node entity by id.
+     * Creates a form to delete a NodeAttribute entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -247,7 +239,7 @@ class NodeController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('node_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('nodeattr_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
